@@ -80,7 +80,7 @@ public class StatusFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_status, null, false);
+		View v = inflater.inflate(R.layout.fragment_status, container, false);
 
 		mButtonTweet = (Button) v.findViewById(R.id.status_button_tweet);
 		mTextStatus = (EditText) v.findViewById(R.id.status_text);
