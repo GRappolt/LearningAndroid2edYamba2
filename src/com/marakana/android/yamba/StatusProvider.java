@@ -28,7 +28,7 @@ public class StatusProvider extends ContentProvider {
 	public boolean onCreate() {
 		dbHelper = new DbHelper(getContext());
 		Log.d(TAG, "onCreated");
-		return false;
+		return true;
 	}
 
 	@Override
