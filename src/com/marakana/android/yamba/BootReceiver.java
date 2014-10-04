@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -32,8 +33,8 @@ public class BootReceiver extends BroadcastReceiver {
 			alarmManager.cancel(operation);
 			Log.d(TAG, "cancelling repeat operation");
 		} else {
-			alarmManager.setInexactRepeating(AlarmManager.RTC,
-					System.currentTimeMillis(), interval, operation);
+			alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
+					SystemClock.elapsedRealtime(), interval, operation);
 			Log.d(TAG, "setting repeat operation for: " + interval);
 		}
 		Log.d(TAG, "onReceived");
