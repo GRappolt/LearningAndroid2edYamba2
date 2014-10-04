@@ -27,7 +27,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 				.setSmallIcon(android.R.drawable.sym_action_email)
 				.setContentIntent(operation)
 				.setAutoCancel(true)
-				.getNotification();
+				.build(); // getNotification() was deprecated in API level 16
 		notificationManager.notify(NOTIFICATION_ID, notification);
 	}
 }
