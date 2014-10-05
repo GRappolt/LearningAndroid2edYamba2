@@ -15,12 +15,13 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 	}
 
-	// Called to lazily initialize the action bar
+	// Called to inflate the menu resource into the given Menu object
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		return super.onCreateOptionsMenu(menu); // clk: not just return true, following
+		// https://developer.android.com/training/basics/actionbar/adding-buttons.html
 	}
 
 	// Called every time user clicks on an action
