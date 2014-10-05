@@ -28,7 +28,8 @@ public class StatusProvider extends ContentProvider {
 	public boolean onCreate() {
 		dbHelper = new DbHelper(getContext());
 		Log.d(TAG, "onCreated");
-		return true;
+		return true; // clk: fix to return true instead of false, following
+		// http://developer.android.com/guide/topics/providers/content-provider-creating.html#OnCreate
 	}
 
 	@Override

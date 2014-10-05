@@ -81,6 +81,8 @@ public class StatusFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_status, container, false);
+		// clk: fix to pass in container instead of null, following
+		//  http://developer.android.com/guide/components/fragments.html
 
 		mButtonTweet = (Button) v.findViewById(R.id.status_button_tweet);
 		mTextStatus = (EditText) v.findViewById(R.id.status_text);

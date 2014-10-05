@@ -35,6 +35,9 @@ public class BootReceiver extends BroadcastReceiver {
 		} else {
 			alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,
 					SystemClock.elapsedRealtime(), interval, operation);
+			// clk: Not using AlarmManager.RTC and corresponding System.currentTimeMillis()
+			// Avoid basing your alarm on clock time if possible, if only need interval
+			//  https://developer.android.com/training/scheduling/alarms.html
 			Log.d(TAG, "setting repeat operation for: " + interval);
 		}
 		Log.d(TAG, "onReceived");

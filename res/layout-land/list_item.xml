@@ -45,5 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/list_item_text_created_at" />
+        <!-- clk: fix horizontal bar partially covering created_at
+             so not android:layout_below="@+id/list_item_text_message" -->
 
 </RelativeLayout>
