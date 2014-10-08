@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.marakana.android.yamba.StatusActivity"
-            android:label="@string/status_update" >
+            android:label="@string/status_update"
+            android:parentActivityName=".MainActivity" > <!-- clk: to perform Up navigation in action bar -->
             <intent-filter>
                 <action android:name="com.marakana.android.yamba.action.tweet" />
 

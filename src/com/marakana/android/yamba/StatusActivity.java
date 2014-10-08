@@ -1,12 +1,18 @@
 package com.marakana.android.yamba;
 
+import android.app.Activity;
 import android.os.Bundle;
 
-public class StatusActivity extends SubActivity {
+public class StatusActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// clk: instead of class extending SubActivity, we extend Activity
+		//  and just directly enable Up button for the Action bar here;
+		//  also need to declare the parent activity in AndroidManifest.xml
+		//  https://developer.android.com/training/basics/actionbar/adding-buttons.html#UpNav
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		// Check if this activity was created before
 		if (savedInstanceState == null) {
