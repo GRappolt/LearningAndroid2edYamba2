@@ -17,6 +17,8 @@ import com.marakana.android.yamba.clientlib.YambaClient.Status;
 import com.marakana.android.yamba.clientlib.YambaClientException;
 
 public class RefreshService extends IntentService {
+    //static final String YAMBA_API_ROOT = "http://yamba.newcircle.com/api";
+    static final String YAMBA_API_ROOT = YambaClient.DEFAULT_API_ROOT; // "http://yamba.marakana.com/api"
 	private static final String TAG = RefreshService.class.getSimpleName();
 
 	public RefreshService() {
@@ -47,7 +49,8 @@ public class RefreshService extends IntentService {
 
 		ContentValues values = new ContentValues();
 
-		YambaClient cloud = new YambaClient(username, password);
+		YambaClient cloud = new YambaClient(username, password,
+		        YAMBA_API_ROOT); // clk: instead of always using built-in default api-root
 		try {
 			int count = 0;
 			List<Status> timeline = cloud.getTimeline(20);

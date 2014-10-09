@@ -162,7 +162,8 @@ public class StatusFragment extends Fragment {
 					return "Please update your username and password";
 				}
 
-				YambaClient cloud = new YambaClient(username, password);
+				YambaClient cloud = new YambaClient(username, password,
+				        RefreshService.YAMBA_API_ROOT); // clk: instead of always using built-in default api-root
 				if (location != null) {
 					cloud.postStatus(params[0], location.getLatitude(),
 							location.getLongitude());
