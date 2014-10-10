@@ -1,5 +1,7 @@
 package com.marakana.android.yamba;
 
+import java.util.Locale;
+
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,6 +14,8 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -27,7 +31,7 @@ import android.widget.Toast;
 
 import com.marakana.android.yamba.clientlib.YambaClient;
 
-public class StatusFragment extends Fragment {
+public class StatusFragment extends Fragment implements OnInitListener {
 	private static final String TAG = StatusFragment.class.getSimpleName();
 	private static final String PROVIDER = LocationManager.GPS_PROVIDER;
 	private Button mButtonTweet;
@@ -36,6 +40,8 @@ public class StatusFragment extends Fragment {
 	private int mDefaultColor;
 	private LocationManager locationManager;
 	private static Location location;
+
+	private TextToSpeech mTts; // clk: TextToSpeech to say status-text
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,21 @@ public class StatusFragment extends Fragment {
 	}
 
 	@Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        // clk: TTS needs a Context (or Activity) in constructor, so do this in onActivityCreated()
+        mTts = new TextToSpeech(getActivity(), this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // clk: release TTS resources here rather than in onDestroy(), since from here fragment
+        //  can be returned to layout from the back stack and does not go through onDestroy()
+        if (mTts != null) mTts.shutdown();
+    }
+
+    @Override
 	public void onResume() {
 		super.onResume();
 		locationManager.requestLocationUpdates(PROVIDER, 60000, 1000,
@@ -133,7 +154,26 @@ public class StatusFragment extends Fragment {
 		return v;
 	}
 
-	class PostTask extends AsyncTask<String, Void, String> {
+    // clk: TextToSpeech initialization callback
+    @Override
+    public void onInit(int status) {
+        if (status==TextToSpeech.SUCCESS) {
+            int retCode = mTts.setLanguage(Locale.getDefault());
+            if (retCode == TextToSpeech.LANG_COUNTRY_AVAILABLE) {
+                // good to go
+                return;
+            } else {
+                // missing data for language, so install it
+                Intent install = new Intent(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+                startActivity(install);
+            }
+        } else {
+            Toast.makeText(getActivity(), "TTS initialization Failed", Toast.LENGTH_LONG).show();
+            Log.e(TAG, "onInit() status code " + status + " was Not Success");
+        }
+    }
+
+    class PostTask extends AsyncTask<String, Void, String> {
 		private ProgressDialog progress;
 
 		@Override
@@ -172,7 +212,8 @@ public class StatusFragment extends Fragment {
 				}
 
 				Log.d(TAG, "Successfully posted to the cloud: " + params[0]);
-				return "Successfully posted";
+				return params[0]; // clk: return the status-text so that we can say it
+
 			} catch (Exception e) {
 				Log.e(TAG, "Failed to post to the cloud", e);
 				e.printStackTrace();
@@ -184,8 +225,11 @@ public class StatusFragment extends Fragment {
 		@Override
 		protected void onPostExecute(String result) {
 			progress.dismiss();
-			if (getActivity() != null && result != null)
-				Toast.makeText(getActivity(), result, Toast.LENGTH_LONG).show();
+
+            if (mTts != null)
+                mTts.speak(result, TextToSpeech.QUEUE_FLUSH, null); // clk: say the status-text posted
+            if (getActivity() != null && result != null)
+                Toast.makeText(getActivity(), "Successfully posted", Toast.LENGTH_LONG).show();
 		}
 
 	}
