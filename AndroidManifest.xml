@@ -39,7 +39,7 @@
             android:name="com.marakana.android.yamba.SettingsActivity"
             android:theme="@android:style/Theme.Material"
             android:label="@string/action_settings" >
-        </activity>
+        </activity> <!-- clk: add a theme, just for a different look -->
         <activity android:name="com.marakana.android.yamba.DetailsActivity" >
         </activity>
 
