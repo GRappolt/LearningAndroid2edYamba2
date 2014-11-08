@@ -66,6 +66,8 @@ public class StatusProvider extends ContentProvider {
 			Log.d(TAG, "inserted uri: " + ret);
 			
 			// Notify that data for this uri has changed
+			// clk: Notify registered observers that a row was updated
+			//      2nd argument for a ContentObserver is null here
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
 
