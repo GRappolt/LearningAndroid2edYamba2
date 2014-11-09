@@ -67,7 +67,9 @@ public class StatusProvider extends ContentProvider {
 			
 			// Notify that data for this uri has changed
 			// clk: Notify registered observers that a row was updated
-			//      2nd argument for a ContentObserver is null here
+			//   Note: Cursor returned by query() registers by calling
+			//         setNotificationUri(ContentResolver, Uri)
+			//   2nd argument for a ContentObserver is null here
 			getContext().getContentResolver().notifyChange(uri, null);
 		}
 
@@ -170,6 +172,8 @@ public class StatusProvider extends ContentProvider {
 		Cursor cursor = qb.query(db, projection, selection, selectionArgs, null, null, orderBy);
 		
 		// register for uri changes
+		// clk: So the Cursor returned to CursorLoader after it does a query
+		//   will know of changes and CursorLoader will know to re-query
 		cursor.setNotificationUri(getContext().getContentResolver(), uri); 
 		
 		Log.d(TAG, "queried records: "+cursor.getCount());
