@@ -90,6 +90,8 @@ public class TimelineFragment extends ListFragment implements
 			return null;
 		Log.d(TAG, "onCreateLoader");
 
+		// clk: build with all information for returned CursorLoader to query
+		//  the specified ContentResolver in the Uri (and return Cursor)
 		return new CursorLoader(getActivity(), StatusContract.CONTENT_URI,
 				null, null, null, StatusContract.DEFAULT_SORT);
 	}
@@ -108,10 +110,11 @@ public class TimelineFragment extends ListFragment implements
 
 		Log.d(TAG, "onLoadFinished with cursor: " + cursor.getCount());
 		mAdapter.swapCursor(cursor);
+		// clk: framework will take care of closing the old cursor once we return
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		mAdapter.swapCursor(null);
+		mAdapter.swapCursor(null); // clk: swap out last cursor so is not used
 	}
 }
